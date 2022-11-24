@@ -3,9 +3,49 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8B552CA1-10EF-413F-B9AB-2AB6BC7AFC46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.Application", "Core\RealTimeChatApp.Aplication\RealTimeChatApp.Application.csproj", "{1140C7A4-43C2-4DDF-8C6C-604F299F3462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.Domain", "Core\RealTimeChatApp.Domain\RealTimeChatApp.Domain.csproj", "{D5A9B970-7B54-43BE-BDA4-8631F1264523}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{85078911-3462-4B11-BE5A-A3D47833FDDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.Infrastructure", "Infrastructure\RealTimeChatApp.Infrastructure\RealTimeChatApp.Infrastructure.csproj", "{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.Persistance", "Infrastructure\RealTimeChatApp.Persistance\RealTimeChatApp.Persistance.csproj", "{097D9207-2A10-456D-959F-E39C35328ADF}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1140C7A4-43C2-4DDF-8C6C-604F299F3462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1140C7A4-43C2-4DDF-8C6C-604F299F3462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1140C7A4-43C2-4DDF-8C6C-604F299F3462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1140C7A4-43C2-4DDF-8C6C-604F299F3462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5A9B970-7B54-43BE-BDA4-8631F1264523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5A9B970-7B54-43BE-BDA4-8631F1264523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5A9B970-7B54-43BE-BDA4-8631F1264523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5A9B970-7B54-43BE-BDA4-8631F1264523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097D9207-2A10-456D-959F-E39C35328ADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097D9207-2A10-456D-959F-E39C35328ADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097D9207-2A10-456D-959F-E39C35328ADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097D9207-2A10-456D-959F-E39C35328ADF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1140C7A4-43C2-4DDF-8C6C-604F299F3462} = {8B552CA1-10EF-413F-B9AB-2AB6BC7AFC46}
+		{D5A9B970-7B54-43BE-BDA4-8631F1264523} = {8B552CA1-10EF-413F-B9AB-2AB6BC7AFC46}
+		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED} = {85078911-3462-4B11-BE5A-A3D47833FDDB}
+		{097D9207-2A10-456D-959F-E39C35328ADF} = {85078911-3462-4B11-BE5A-A3D47833FDDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF35BBE1-C888-43AB-BD94-BB68290AE9F3}
