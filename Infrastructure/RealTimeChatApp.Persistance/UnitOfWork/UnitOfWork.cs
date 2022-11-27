@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using RealTimeChatApp.Application.UnitOfWork;
+using RealTimeChatApp.Persistance.Contexts;
 
-namespace RealTimeChatApp.Persistance.UnitOfWork
+namespace RealTimeChatApp.Persistance.UnitOfWork;
+
+public class UnitOfWork : IUnitOfWork
 {
-    internal class UnitOfWork
+    private readonly RealTimeChatAppDbContext _realTimeChatAppDbContext;
+
+    public UnitOfWork(RealTimeChatAppDbContext realTimeChatAppDbContext)
     {
+        _realTimeChatAppDbContext = realTimeChatAppDbContext;
+    }
+
+    public async Task Commit()
+    {
+        await _realTimeChatAppDbContext.SaveChangesAsync();
     }
 }

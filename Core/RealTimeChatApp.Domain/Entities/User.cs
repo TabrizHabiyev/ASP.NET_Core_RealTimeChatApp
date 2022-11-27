@@ -1,9 +1,8 @@
-﻿
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace RealTimeChatApp.Domain.Entities;
 
-public class User : IdentityUser<string>
+public class User : IdentityUser<Guid>
 {
 
 }
