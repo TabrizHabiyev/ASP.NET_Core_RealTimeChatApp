@@ -7,8 +7,8 @@ namespace RealTimeChatApp.Application.Common.Interfaces;
 
 public interface IRealTimeChatAppDbContext
 {
-    DbSet<Chat> Chats { get; set; }
-    DbSet<Message> Messages { get; set; }
-    DbSet<ChatUser> ChatUsers { get; set; }
+    DbSet<Chat> Chats { get;}
+    DbSet<Message> Messages { get;}
+    DbSet<ChatUser> ChatUsers { get;}
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
