@@ -1,6 +1,4 @@
-﻿
-
-namespace RealTimeChatApp.Domain.Enums;
+﻿namespace RealTimeChatApp.Domain.Enums;
 
 public  enum ChatType
 {
