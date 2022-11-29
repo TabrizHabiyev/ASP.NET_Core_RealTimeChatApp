@@ -12,6 +12,8 @@ public static class ServiceRegistration
     {
         services.AddTransient<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
+
+
         services.AddDbContext<RealTimeChatAppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
             builder => builder.MigrationsAssembly(typeof(RealTimeChatAppDbContext).Assembly.FullName))
         );
