@@ -14,8 +14,4 @@
     <ProjectReference Include="..\RealTimeChatApp.Domain\RealTimeChatApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Interfaces\Services\" />
-  </ItemGroup>
-
 </Project>
