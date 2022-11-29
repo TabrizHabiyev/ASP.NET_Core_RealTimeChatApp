@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.Presentation", "Presentation\RealTimeChatApp.Presentation\RealTimeChatApp.Presentation.csproj", "{4F9DDB48-4A2E-4A0F-8111-AEB67FF18FB3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeChatApp.SignalR", "Infrastructure\RealTimeChatApp.SignalR\RealTimeChatApp.SignalR.csproj", "{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{4F9DDB48-4A2E-4A0F-8111-AEB67FF18FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F9DDB48-4A2E-4A0F-8111-AEB67FF18FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9DDB48-4A2E-4A0F-8111-AEB67FF18FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{EB4D0CA3-D524-493D-9F51-17B7AC2C56ED} = {85078911-3462-4B11-BE5A-A3D47833FDDB}
 		{097D9207-2A10-456D-959F-E39C35328ADF} = {85078911-3462-4B11-BE5A-A3D47833FDDB}
 		{4F9DDB48-4A2E-4A0F-8111-AEB67FF18FB3} = {48940DDD-96BD-4126-9982-3246B77CDC18}
+		{5DEE37AE-3A4C-4792-BAFE-BC536EB2E764} = {85078911-3462-4B11-BE5A-A3D47833FDDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BF35BBE1-C888-43AB-BD94-BB68290AE9F3}
