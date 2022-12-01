@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\RealTimeChatApp.Aplication\RealTimeChatApp.Application.csproj" />
+    <ProjectReference Include="..\RealTimeChatApp.Infrastructure\RealTimeChatApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

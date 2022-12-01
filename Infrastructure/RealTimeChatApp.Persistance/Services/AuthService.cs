@@ -2,6 +2,7 @@
 using RealTimeChatApp.Application.Common.Interfaces.Services;
 using RealTimeChatApp.Application.Common.Interfaces.Token;
 using RealTimeChatApp.Application.DTOs;
+using RealTimeChatApp.Application.DTOs.User;
 using RealTimeChatApp.Domain.Entities;
 using System.Web;
 
@@ -11,26 +12,23 @@ public class AuthService : IAuthService
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly IUserService _userService;
     private readonly ITokenHandler _tokenHandler;
     private readonly IEmailSenderService _emailHandler;
-    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenHandler tokenHandler, IUserService userService, IEmailSenderService emailHandler)
+    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenHandler tokenHandler, IEmailSenderService emailHandler)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _tokenHandler = tokenHandler;
-        _userService = userService;
         _emailHandler = emailHandler;
     }
 
-    public async Task<Token> LoginAsync(string email, string password)
+    public async Task<Token> LoginAsync(LoginUserRequestDto loginUserRequestDto)
     {
-        User? user = await _userManager.FindByEmailAsync(email);
+        User? user = await _userManager.FindByEmailAsync(loginUserRequestDto.Email);
 
-        if (user == null)
-            throw new Exception("User not found");
+        if (user == null) throw new Exception("User not found");
 
-        SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+        SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, loginUserRequestDto.Password, false);
         if (result.Succeeded)
         {
             var roles = await _userManager.GetRolesAsync(user);
@@ -39,53 +37,52 @@ public class AuthService : IAuthService
 
             return token;
         }
-        throw new Exception("User not found");
+        else throw new Exception("Password is not correct");
     }
 
 
-    public async Task<(bool, bool)> PasswordResetdByEmailAsync(string email)
+    public async Task<bool> PasswordResetdByEmailAsync(ResetUserPasswordRequestDto RequestDto)
     {
-        User? user = await _userManager.FindByEmailAsync(email);
-        if (!await _userManager.IsEmailConfirmedAsync(user)) return (false, false);
-
-
+        User? user = await _userManager.FindByEmailAsync(RequestDto.Email);
+        
         if (user != null)
         {
-
+            
             string resetToken = $"https://localhost:7029/api/Auth/UpdatePassword/{user.Id}/" + HttpUtility.UrlEncode(await _userManager.GeneratePasswordResetTokenAsync(user));
-            bool result = await _emailHandler.SendEmailForResetPassword(email, resetToken);
-
-            return (result, true);
+            bool result = await _emailHandler.SendEmailForResetPassword(RequestDto.Email, resetToken);
+            
+            if (result)
+                return true;
+            else  throw new Exception("Email not sent");
         }
-        else
-            return (false, false);
+        else throw new Exception("User not found");
     }
 
 
-    public async Task<bool> UpdateUserPassword(string userId, string token, string password)
+    public async Task<bool> UpdateUserPassword(UpdateUserPasswordRequestDto RequestDto)
     {
-        User? user = await _userManager.FindByIdAsync(userId);
-        if (user == null) return false;
-        IdentityResult result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(token), password);
+        User? user = await _userManager.FindByIdAsync(RequestDto.userId);
+        if (user == null) throw new Exception("User not found");
+        IdentityResult result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(RequestDto.token), RequestDto.password);
         if (result.Succeeded)
         {
             await _userManager.UpdateSecurityStampAsync(user);
             return result.Succeeded;
         }
-        else return false;
+        else throw new Exception("Tken is not valid or expired");
     }
 
-    public async Task<bool> ConfirmEmail(string userId, string token)
+    public async Task<bool> ConfirmEmail(ConfirmUserEmailRequestDto RequestDto)
     {
-        User? user = await _userManager.FindByIdAsync(userId);
+        User? user = await _userManager.FindByIdAsync(RequestDto.userId);
 
-        if (user == null) return false;
+        if (user == null) throw new Exception("User not found");
 
-        IdentityResult result = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlDecode(token));
+        IdentityResult result = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlDecode(RequestDto.token));
         if (result.Succeeded)
         {
             return result.Succeeded;
         }
-        else return false;
+        else throw new Exception("Tken is not valid or expired");
     }
 }
