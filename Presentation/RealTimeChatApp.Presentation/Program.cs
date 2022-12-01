@@ -1,6 +1,7 @@
 using RealTimeChatApp.Application;
 using RealTimeChatApp.Infrastructure;
 using RealTimeChatApp.Persistance;
+using RealTimeChatApp.Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
+// Global Excepion Handler  Middleware
+app.UseGlobalExcepionHandler();
+
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

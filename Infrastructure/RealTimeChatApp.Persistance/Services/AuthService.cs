@@ -4,6 +4,7 @@ using RealTimeChatApp.Application.Common.Interfaces.Token;
 using RealTimeChatApp.Application.DTOs;
 using RealTimeChatApp.Application.DTOs.User;
 using RealTimeChatApp.Domain.Entities;
+using GlobalEx =RealTimeChatApp.Domain.ExceptionModels.Common;
 using System.Web;
 
 namespace RealTimeChatApp.Persistance.Services;
@@ -26,7 +27,7 @@ public class AuthService : IAuthService
     {
         User? user = await _userManager.FindByEmailAsync(loginUserRequestDto.Email);
 
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new  GlobalEx.NotFoundException("User not found");
 
         SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, loginUserRequestDto.Password, false);
         if (result.Succeeded)
@@ -37,7 +38,7 @@ public class AuthService : IAuthService
 
             return token;
         }
-        else throw new Exception("Password is not correct");
+        else throw new GlobalEx.UnauthorizedException("Email or password is wrong");
     }
 
 
@@ -53,36 +54,36 @@ public class AuthService : IAuthService
             
             if (result)
                 return true;
-            else  throw new Exception("Email not sent");
+            else  throw new GlobalEx.InternalServerErrorException("There was an error sending the email, please try again later");
         }
-        else throw new Exception("User not found");
+        else throw new GlobalEx.NotFoundException("User not found");
     }
 
 
     public async Task<bool> UpdateUserPassword(UpdateUserPasswordRequestDto RequestDto)
     {
         User? user = await _userManager.FindByIdAsync(RequestDto.userId);
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new GlobalEx.NotFoundException("User not found");
         IdentityResult result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(RequestDto.token), RequestDto.password);
         if (result.Succeeded)
         {
             await _userManager.UpdateSecurityStampAsync(user);
             return result.Succeeded;
         }
-        else throw new Exception("Tken is not valid or expired");
+        else throw new GlobalEx.UnauthorizedException("Token is invalid or expired");
     }
 
     public async Task<bool> ConfirmEmail(ConfirmUserEmailRequestDto RequestDto)
     {
         User? user = await _userManager.FindByIdAsync(RequestDto.userId);
 
-        if (user == null) throw new Exception("User not found");
+        if (user == null) throw new GlobalEx.NotFoundException("User not found");
 
         IdentityResult result = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlDecode(RequestDto.token));
         if (result.Succeeded)
         {
             return result.Succeeded;
         }
-        else throw new Exception("Tken is not valid or expired");
+        else throw new GlobalEx.UnauthorizedException("Token is invalid or expired");
     }
 }
