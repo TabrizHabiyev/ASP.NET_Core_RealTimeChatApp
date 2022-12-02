@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace RealTimeChatApp.Persistance.Contexts;
 
+    
 public class RealTimeChatAppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IRealTimeChatAppDbContext
 {
     public RealTimeChatAppDbContext(DbContextOptions<RealTimeChatAppDbContext> options):base(options){}
@@ -20,5 +21,4 @@ public class RealTimeChatAppDbContext : IdentityDbContext<User, IdentityRole<Gui
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
-
 }

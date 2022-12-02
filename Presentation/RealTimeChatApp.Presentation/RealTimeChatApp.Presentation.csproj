@@ -30,6 +30,7 @@
     <ProjectReference Include="..\..\Core\RealTimeChatApp.Aplication\RealTimeChatApp.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RealTimeChatApp.Infrastructure\RealTimeChatApp.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\RealTimeChatApp.Persistance\RealTimeChatApp.Persistance.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\RealTimeChatApp.SignalR\RealTimeChatApp.SignalR.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

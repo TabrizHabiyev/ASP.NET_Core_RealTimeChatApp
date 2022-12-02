@@ -12,7 +12,7 @@ public class Chat: BaseEntity<Guid>
     }
     public override Guid Id { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public ChatType Type { get; set; }
     public ICollection<Message> Messages { get; set; }
     public ICollection<ChatUser> Users { get; set; }
