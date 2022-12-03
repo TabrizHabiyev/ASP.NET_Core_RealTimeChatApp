@@ -22,5 +22,12 @@ namespace Alfaex.az_API.Controllers
             return Ok(chats);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ChatDto>> GetChatById(Guid id)
+        {
+            var chat = await _chatService.GetChatByIdAsync(id);
+            return Ok(chat);
+        }
+
     }
 }
