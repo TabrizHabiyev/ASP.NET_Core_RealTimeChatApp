@@ -47,5 +47,7 @@ public static class ServiceRegistration
         services.AddScoped<IChatRepository, ChatRepository>();
 
         services.AddScoped<IMessageRepository, MessageRepository>();
+
+        services.AddScoped<IChatService, ChatService>();
     }
 }

@@ -4,120 +4,119 @@ using RealTimeChatApp.Domain.Entities.Common;
 using RealTimeChatApp.Persistance.Contexts;
 using System.Linq.Expressions;
 
-namespace RealTimeChatApp.Persistance.Repositories;
-
 public class EfRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : BaseEntity<TPrimaryKey>
 {
+    private readonly RealTimeChatAppDbContext _context;
+    private readonly DbSet<TEntity> _dbSet;
 
-    private readonly RealTimeChatAppDbContext _dbContext;
-
-    private DbSet<TEntity> Table => _dbContext.Set<TEntity>();
+    public EfRepository(RealTimeChatAppDbContext context)
+    {
+        _context = context;
+        _dbSet = _context.Set<TEntity>();
+    }
 
     public IQueryable<TEntity> GetAll()
     {
-        IQueryable<TEntity> query = Table;
-        return query;
+        return _dbSet.AsQueryable();
     }
 
-    public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+    public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
     {
-        var query = GetAll();
-        BindIncludeProperties(query, includeProperties);
-        includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        var query = _dbSet.AsQueryable();
+        foreach (var propertySelector in propertySelectors)
+        {
+            query = query.Include(propertySelector);
+        }
         return query;
     }
 
     public async Task<List<TEntity>> GetAllList()
     {
-        return await GetAll().ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
-    public Task<List<TEntity>> GetAllListIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+    public async Task<List<TEntity>> GetAllListIncluding(params Expression<Func<TEntity, object>>[] propertySelectors)
     {
-        var query = GetAll();
-        includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-        return query.ToListAsync();
+        var query = _dbSet.AsQueryable();
+        foreach (var propertySelector in propertySelectors)
+        {
+            query = query.Include(propertySelector);
+        }
+        return await query.ToListAsync();
     }
 
-    public ValueTask<TEntity> Find(TPrimaryKey id)
+    public async Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate)
     {
-        return Table.FindAsync(id);
+        return await _dbSet.FirstOrDefaultAsync(predicate);
     }
 
-    public Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate)
+    public IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> predicate)
     {
-        return GetAll().FirstOrDefaultAsync(predicate);
+        return _dbSet.Where(predicate);
     }
 
-    public IQueryable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity> Get(TPrimaryKey id)
     {
-        return GetAll().Where(predicate);
+        return await _dbSet.FindAsync(id);
     }
 
-    public IQueryable<TEntity> FindByIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
+    public async Task<TEntity> Insert(TEntity entity)
     {
-        var query = GetAll();
-        query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-        return query.Where(predicate);
+        await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public Task<bool> Any(Expression<Func<TEntity, bool>> predicate)
+    public async Task<TEntity> Update(TEntity entity)
     {
-        return Table.AnyAsync(predicate);
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
+        return entity;
     }
 
-    public Task<bool> All(Expression<Func<TEntity, bool>> predicate)
+    public async Task Delete(TPrimaryKey id)
     {
-        return Table.AllAsync(predicate);
-    }
-
-    public async Task<int> Count()
-    {
-        return await Table.CountAsync();
-    }
-
-    public Task<int> Count(Expression<Func<TEntity, bool>> predicate)
-    {
-        return Table.CountAsync(predicate);
-    }
-
-    public async Task Add(TEntity entity)
-    {
-        await Table.AddAsync(entity);
-    }
-
-    public async Task Update(TEntity entity)
-    {
-        _dbContext.Entry(entity).State = EntityState.Modified;
+        var entity = await _dbSet.FindAsync(id);
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Delete(TEntity entity)
     {
-        _dbContext.Entry(entity).State = EntityState.Deleted;
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteWhere(Expression<Func<TEntity, bool>> predicate)
     {
-        IEnumerable<TEntity> entities = Table.Where(predicate);
-
-        foreach (var entity in entities)
-        {
-            _dbContext.Entry(entity).State = EntityState.Deleted;
-        }
+        var entities = _dbSet.Where(predicate);
+        _dbSet.RemoveRange(entities);
+        await _context.SaveChangesAsync();
     }
 
-    private static void BindIncludeProperties(IQueryable<TEntity> query, IEnumerable<Expression<Func<TEntity, object>>> includeProperties)
+    public async Task<int> Count()
     {
-        includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        return await _dbSet.CountAsync();
     }
 
-    public async Task Commit(CancellationToken cancellationToken = new CancellationToken())
+    public async Task<int> Count(Expression<Func<TEntity, bool>> predicate)
     {
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        return await _dbSet.CountAsync(predicate);
+    }
+
+    public async Task<bool> Any(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.AnyAsync(predicate);
+    }
+
+    public async Task<bool> All(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.AllAsync(predicate);
     }
 
     public void Dispose()
     {
-        _dbContext?.Dispose();
+        _context.Dispose();
     }
+
 }
