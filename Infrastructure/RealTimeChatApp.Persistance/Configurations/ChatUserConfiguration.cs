@@ -8,7 +8,15 @@ internal class ChatUserConfiguration : IEntityTypeConfiguration<ChatUser>
 {
     public void Configure(EntityTypeBuilder<ChatUser> builder)
     {
-        builder.HasKey(x => new { x.ChatId, x.UserId });
+        builder.HasKey(cu => new { cu.ChatId, cu.UserId });
+
+        builder.HasOne(cu => cu.Chat)
+            .WithMany(c => c.Users)
+            .HasForeignKey(cu => cu.ChatId);
+
+        builder.HasOne(cu => cu.User)
+            .WithMany(u => u.Chats)
+            .HasForeignKey(cu => cu.UserId);
 
         builder.ToTable("ChatUsers");
     }

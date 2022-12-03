@@ -2,11 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using RealTimeChatApp.Application.Common.Interfaces.Services;
 using RealTimeChatApp.Application.Common.Interfaces.Token;
+using RealTimeChatApp.Application.Repositories;
 using RealTimeChatApp.Application.UnitOfWork;
 using RealTimeChatApp.Domain.Entities;
 using RealTimeChatApp.Infrastructure.Services.Email;
 using RealTimeChatApp.Infrastructure.Services.Token;
 using RealTimeChatApp.Persistance.Contexts;
+using RealTimeChatApp.Persistance.Repositories;
 using RealTimeChatApp.Persistance.Services;
 
 namespace RealTimeChatApp.Persistance.UnitOfWork;
@@ -21,6 +23,10 @@ public class UnitOfWork : IUnitOfWork
     public IEmailSenderService EmailSenderService { get; set; }
     public IUserService UserService { get; set; }
     public IAuthService AuthService { get; set; }
+
+    private IMessageRepository _messageRepository;
+
+    private IChatRepository _chatRepository;
 
     public UnitOfWork(
        RealTimeChatAppDbContext realTimeChatAppDbContext,
@@ -38,6 +44,11 @@ public class UnitOfWork : IUnitOfWork
         UserService = new UserService(_userManager,EmailSenderService);
         AuthService = new AuthService(_userManager, _signInManager, TokenHandler, EmailSenderService);
     }
+
+    public IMessageRepository MessageRepository => _messageRepository ?? (_messageRepository = new MessageRepository(_realTimeChatAppDbContext));
+
+    public IChatRepository ChatRepository => _chatRepository ?? (_chatRepository = new ChatRepository(_realTimeChatAppDbContext));
+
 
     public async Task Commit()
     {

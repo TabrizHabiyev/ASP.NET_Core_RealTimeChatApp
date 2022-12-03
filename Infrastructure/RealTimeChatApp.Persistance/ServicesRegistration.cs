@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RealTimeChatApp.Application.Common.Interfaces.Services;
+using RealTimeChatApp.Application.Repositories;
 using RealTimeChatApp.Application.UnitOfWork;
 using RealTimeChatApp.Domain.Entities;
 using RealTimeChatApp.Domain.Enums;
 using RealTimeChatApp.Persistance.Contexts;
 using RealTimeChatApp.Persistance.Extensions;
+using RealTimeChatApp.Persistance.Repositories;
 using RealTimeChatApp.Persistance.Services;
 
 namespace RealTimeChatApp.Persistance;
@@ -41,5 +43,9 @@ public static class ServiceRegistration
         services.AddScoped<IUserService, UserService>();
 
         services.AddScoped<IAuthService, AuthService>();
+
+        services.AddScoped<IChatRepository, ChatRepository>();
+
+        services.AddScoped<IMessageRepository, MessageRepository>();
     }
 }

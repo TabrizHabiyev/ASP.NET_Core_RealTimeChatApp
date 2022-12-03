@@ -10,10 +10,9 @@ public class Chat: BaseEntity<Guid>
         Messages = new List<Message>();
         Users = new List<ChatUser>();
     }
-    public override Guid Id { get; set; }
-
     public string Name { get; set; } = null!;
     public ChatType Type { get; set; }
+    public string? CreatedBy { get; set; } 
     public ICollection<Message> Messages { get; set; }
     public ICollection<ChatUser> Users { get; set; }
 }

@@ -3,6 +3,7 @@ using RealTimeChatApp.Application.Common.Interfaces.Services;
 using RealTimeChatApp.Application.DTOs.User;
 using RealTimeChatApp.Domain.Entities;
 using System.Web;
+using GlobalEx =RealTimeChatApp.Domain.ExceptionModels.Common;
 
 namespace RealTimeChatApp.Persistance.Services;
 
@@ -32,18 +33,15 @@ public class UserService : IUserService
 
             var confirmLink = $"https://localhost:7029/api/Auth/ConfirimEmail/{user.Id}/" +
                 HttpUtility.UrlEncode(await _userManager.GenerateEmailConfirmationTokenAsync(user));
-
-            bool sendEmailConfirim = await _emailSender.SendEmailForConfirimEmail(model.Email, confirmLink);
-
-            if (sendEmailConfirim)
+           
+            try
             {
-                response.Message = "User created successfully";
+                 bool sendEmailConfirim = await _emailSender.SendEmailForConfirimEmail(model.Email, confirmLink);
             }
-            else
+            catch
             {
-                response.Message = "There was an error creating the user, please try again later";
-                response.Success = false;
                 await _userManager.DeleteAsync(user);
+                throw new GlobalEx.InternalServerErrorException("There was an error sending the email, please try again later");
             }
         }
         else

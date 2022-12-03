@@ -3,10 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RealTimeChatApp.Persistance.Contexts;
 using RealTimeChatApp.Domain.Enums;
-using System.Reflection;
 
 namespace RealTimeChatApp.Persistance;
-
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RealTimeChatAppDbContext>
 {
     public RealTimeChatAppDbContext CreateDbContext(string[] args)

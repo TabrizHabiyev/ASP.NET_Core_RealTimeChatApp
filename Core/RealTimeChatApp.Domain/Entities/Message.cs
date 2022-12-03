@@ -9,10 +9,14 @@ namespace RealTimeChatApp.Domain.Entities;
 
 public class Message : BaseEntity<Guid>
 {
-    public override Guid Id { get; set; }
-    public string Name { get; set; }
-    public string Text { get; set; }
-    public DateTime Timestamp { get; set; }
-    public Guid ChatId { get; set; }
-    public Chat Chat { get; set; }
-}
+        public string? Text { get; set; }
+        bool IsDeleted { get; set; }
+        bool IsEdited { get; set; }
+        bool IsImage { get; set; }
+        public string? ImageUrl { get; set; }
+        public DateTime Timestamp { get; set; }
+        public Guid ChatId { get; set; }
+        public Chat Chat { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public User User { get; set; } = null!;
+    }
