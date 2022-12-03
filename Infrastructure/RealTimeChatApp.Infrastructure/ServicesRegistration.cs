@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using RealTimeChatApp.Aplication.Common.Interfaces.Services;
 using RealTimeChatApp.Application.Common.Interfaces.Services;
 using RealTimeChatApp.Application.Common.Interfaces.Token;
 using RealTimeChatApp.Infrastructure.Services.Email;
+using RealTimeChatApp.Infrastructure.Services.File;
 using RealTimeChatApp.Infrastructure.Services.Token;
 
 namespace RealTimeChatApp.Infrastructure;
@@ -16,6 +18,7 @@ public static class ServiceRegistration
     {
         services.AddScoped<ITokenHandler, TokenHadler>();
         services.AddScoped<IEmailSenderService, EmailSenderService>();
+        services.AddScoped<ICloidinaryFileServices, CloidinaryFileServices>();
 
 
         #region Jwt Bearer Configuration

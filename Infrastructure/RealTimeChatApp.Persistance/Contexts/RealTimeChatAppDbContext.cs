@@ -15,7 +15,8 @@ public class RealTimeChatAppDbContext : IdentityDbContext<User, IdentityRole<Gui
     public DbSet<Chat> Chats => Set<Chat>();
     public DbSet<Message> Messages => Set<Message>();
     public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
-
+    public DbSet<Reaction> Reactions => Set<Reaction>();
+    public DbSet<Emoji> Emojis => Set<Emoji>();
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

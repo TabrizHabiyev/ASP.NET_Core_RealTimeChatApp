@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.DTOs.Chat;
+using RealTimeChatApp.Application.DTOs;
 using RealTimeChatApp.Presentation.Helpers;
+
 
 namespace Alfaex.az_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class ChatController : BaseControllerHelper
     {
         private readonly IChatService _chatService;
@@ -15,74 +18,89 @@ namespace Alfaex.az_API.Controllers
             _chatService = chatService;
         }
 
+
         [HttpGet]
-        public async Task<ActionResult<List<ChatDto>>> GetAllChats()
+         public async Task<IActionResult> GetPrivateChats()
         {
-            var chats = await _chatService.GetAllChatsAsync();
+            var chats = await _chatService.GetPrivateChats(Guid.Parse(GetUserId()));
             return Ok(chats);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ChatDto>> GetChatById(Guid id)
+        [HttpGet]
+         public async Task<IActionResult> GetChats()
         {
-            var chat = await _chatService.GetChatByIdAsync(id);
+            var chat = await _chatService.GetChats(Guid.Parse(GetUserId()));
+            return Ok(chat);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetChatAsync(Guid id)
+        {
+            var chat = await _chatService.GetChatAsync(id);
             return Ok(chat);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ChatDto>> CreateChat(ChatDto chatDto)
+         public async Task<IActionResult> CreatePrivateChat(Guid targetId)
         {
-            var chat = await _chatService.CreateChatAsync(chatDto);
+            var chat = await _chatService.CreatePrivateChat(Guid.Parse(GetUserId()), targetId);
             return Ok(chat);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ChatDto>> UpdateChat(ChatDto chatDto)
+        [HttpPost]
+        public async Task<IActionResult> CreateRoom(string name)
         {
-            var chat = await _chatService.UpdateChatAsync(chatDto);
-            return Ok(chat);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteChat(Guid id)
-        {
-            await _chatService.DeleteChatAsync(id);
+            await _chatService.CreateRoom(name, Guid.Parse(GetUserId()));
             return Ok();
         }
 
-        [HttpGet("{id}/messages")]
-        public async Task<ActionResult<List<ChatMessageDto>>> GetMessagesByChatId(Guid id)
+        [HttpGet]
+        public async Task<IActionResult> GetMessagestIdAsync(Guid id)
         {
-            var messages = await _chatService.GetMessagesByChatIdAsync(id);
+            var messages = await _chatService.GetMessagesIdAsync(id);
             return Ok(messages);
         }
 
-        [HttpPost("{id}/messages")]
-        public async Task<ActionResult<ChatMessageDto>> CreateMessage(Guid id, ChatMessageDto messageDto)
+        [HttpPost]
+         public async Task<bool> DeleteChatAsync(Guid chatId)
         {
-            messageDto.Chat.Id = id;
-            var message = await _chatService.CreateMessageAsync(messageDto);
+            var chat = await  _chatService.DeleteChatAsync(chatId, Guid.Parse(GetUserId()));
+            return chat;
+        }
+
+       [HttpGet]
+        public async Task<IActionResult> GetMessagesIdAsync(Guid id)
+        {
+           var message = await _chatService.GetMessagesIdAsync(id);
             return Ok(message);
         }
 
-        [HttpPut("{id}/messages")]
-        public async Task<ActionResult<ChatMessageDto>> UpdateMessage(Guid id, ChatMessageDto messageDto)
-        {
-            messageDto.Chat.Id = id;
-            var message = await _chatService.UpdateMessageAsync(messageDto);
-            return Ok(message);
-        }
-
-        [HttpDelete("{id}/messages")]
-        public async Task<ActionResult> DeleteMessage(Guid id)
-        {
-            await _chatService.DeleteMessageAsync(id);
+        [HttpPost]
+         public async Task<IActionResult> CreateMessageAsync([FromForm] CreateMessageDto createMessage)
+         {
+            var message = await _chatService.CreateMessageAsync(createMessage, Guid.Parse(GetUserId()));
             return Ok();
-        }
+         }
 
+        [HttpPut]
+         public async Task<IActionResult> UpdateMessageAsync([FromForm] CreateMessageDto createMessage,Guid messageId)
+         {
+            var message = await _chatService.UpdateMessageAsync(createMessage, Guid.Parse(GetUserId()), messageId);
+            return Ok();
+         }
 
+         [HttpPost]
+         public async Task JoinRoom(ChatJoinRoomDto chatJoinRoomDto)
+         {
+            await _chatService.JoinRoom(chatJoinRoomDto);
+         }
 
-
+         [HttpDelete]
+          public async Task<bool> DeleteMessageAsync(Guid id)
+          {
+            bool result = await _chatService.DeleteMessageAsync(id, Guid.Parse(GetUserId()));
+            return result;
+          }
 
     }
 }

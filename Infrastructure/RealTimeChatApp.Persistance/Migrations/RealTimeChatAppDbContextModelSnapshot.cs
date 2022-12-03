@@ -43,21 +43,21 @@ namespace RealTimeChatApp.Persistance.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b9f119a1-c3f2-4efa-881b-09ceaa222217",
+                            Id = "c0d8c8e4-3295-4f17-a5d9-6ab52a66f2a1",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b1e22618-4438-4d83-aaf5-0268f8557b33",
+                            Id = "ea4232f7-4605-4ce1-9363-45aa98b17b02",
                             ConcurrencyStamp = "2",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "81262e14-c8d9-4cf6-9569-e8653c0da18a",
+                            Id = "1ca1bb21-c843-40a1-a579-77dc4d82166f",
                             ConcurrencyStamp = "3",
                             Name = "Guest",
                             NormalizedName = "GUEST"
@@ -202,7 +202,6 @@ namespace RealTimeChatApp.Persistance.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Type")
@@ -231,31 +230,87 @@ namespace RealTimeChatApp.Persistance.Migrations
                     b.ToTable("ChatUsers", (string)null);
                 });
 
+            modelBuilder.Entity("RealTimeChatApp.Domain.Entities.Emoji", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Emojis");
+                });
+
             modelBuilder.Entity("RealTimeChatApp.Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AttachmentUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsAttachment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ReplyToMessageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
 
+                    b.HasIndex("ReplyToMessageId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Messages", (string)null);
+                });
+
+            modelBuilder.Entity("RealTimeChatApp.Domain.Entities.Reaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EmojiId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmojiId");
+
+                    b.HasIndex("MessageId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("RealTimeChatApp.Domain.Entities.User", b =>
@@ -402,7 +457,40 @@ namespace RealTimeChatApp.Persistance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RealTimeChatApp.Domain.Entities.Message", "ReplyToMessage")
+                        .WithMany()
+                        .HasForeignKey("ReplyToMessageId");
+
+                    b.HasOne("RealTimeChatApp.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Chat");
+
+                    b.Navigation("ReplyToMessage");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RealTimeChatApp.Domain.Entities.Reaction", b =>
+                {
+                    b.HasOne("RealTimeChatApp.Domain.Entities.Emoji", "Emoji")
+                        .WithMany()
+                        .HasForeignKey("EmojiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RealTimeChatApp.Domain.Entities.Message", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Emoji");
+
+                    b.Navigation("Message");
                 });
 
             modelBuilder.Entity("RealTimeChatApp.Domain.Entities.Chat", b =>

@@ -40,7 +40,7 @@ public class UserService : IUserService
             }
             catch
             {
-                await _userManager.DeleteAsync(user);
+                //await _userManager.DeleteAsync(user);
                 throw new GlobalEx.InternalServerErrorException("There was an error sending the email, please try again later");
             }
         }

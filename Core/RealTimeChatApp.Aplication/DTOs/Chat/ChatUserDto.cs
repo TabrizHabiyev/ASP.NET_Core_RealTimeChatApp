@@ -1,4 +1,4 @@
-﻿namespace RealTimeChatApp.Application.DTOs.Chat
+﻿namespace RealTimeChatApp.Application.DTOs
 {
     public class ChatUserDto
     {

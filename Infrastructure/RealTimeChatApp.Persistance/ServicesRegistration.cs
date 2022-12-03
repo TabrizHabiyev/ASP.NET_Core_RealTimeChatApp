@@ -36,8 +36,10 @@ public static class ServiceRegistration
                 options.User.RequireUniqueEmail = true;
 
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<RealTimeChatAppDbContext>();
-            
-            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromMinutes(60));
+
+        services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromMinutes(60));
+
+
         #endregion
 
         services.AddScoped<IUserService, UserService>();
@@ -48,6 +50,9 @@ public static class ServiceRegistration
 
         services.AddScoped<IMessageRepository, MessageRepository>();
 
-        services.AddScoped<IChatService, ChatService>();
+        services.AddScoped<IReactionRepository, ReactionRepository>();
+
+        services.AddTransient<IChatService, ChatService>();
+
     }
 }

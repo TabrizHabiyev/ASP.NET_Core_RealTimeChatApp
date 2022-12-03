@@ -12,5 +12,6 @@ public interface IUnitOfWork
     public IAuthService AuthService { get; set; }
     public IMessageRepository MessageRepository { get; }
     public IChatRepository ChatRepository { get; }
+    public IReactionRepository ReactionRepository { get; }
     public Task Commit();
 }

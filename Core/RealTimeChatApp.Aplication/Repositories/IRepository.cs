@@ -8,8 +8,10 @@ public interface IRepository<TEntity, in TPrimaryKey> : IDisposable where TEntit
 {
     IQueryable<TEntity> GetAll();
     IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] propertySelectors);
-    Task<List<TEntity>> GetAllList();
     Task<List<TEntity>> GetAllListIncluding(params Expression<Func<TEntity, object>>[] propertySelectors);
+    IQueryable<TEntity> GetAllIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
+    Task<TEntity> GetSingleIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors);
+    Task<List<TEntity>> GetAllList();
     Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate);
     IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> predicate);
     Task<TEntity> Get(TPrimaryKey id);
@@ -22,7 +24,6 @@ public interface IRepository<TEntity, in TPrimaryKey> : IDisposable where TEntit
     Task<int> Count(Expression<Func<TEntity, bool>> predicate);
     Task<bool> Any(Expression<Func<TEntity, bool>> predicate);
     Task<bool> All(Expression<Func<TEntity, bool>> predicate);
-    Task Commit(CancellationToken cancellationToken = default);
 }
 
 

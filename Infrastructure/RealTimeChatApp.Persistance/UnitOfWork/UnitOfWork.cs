@@ -25,8 +25,8 @@ public class UnitOfWork : IUnitOfWork
     public IAuthService AuthService { get; set; }
 
     private IMessageRepository _messageRepository;
-
     private IChatRepository _chatRepository;
+    private IReactionRepository _reactionRepository;
 
     public UnitOfWork(
        RealTimeChatAppDbContext realTimeChatAppDbContext,
@@ -49,6 +49,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IChatRepository ChatRepository => _chatRepository ?? (_chatRepository = new ChatRepository(_realTimeChatAppDbContext));
 
+    public IReactionRepository ReactionRepository => _reactionRepository ?? (_reactionRepository = new ReactionRepository(_realTimeChatAppDbContext));
 
     public async Task Commit()
     {

@@ -2,6 +2,8 @@ using RealTimeChatApp.Application;
 using RealTimeChatApp.Infrastructure;
 using RealTimeChatApp.Persistance;
 using RealTimeChatApp.Presentation.Extensions;
+using RealTimeChatApp.Presentation.SwaggerExtensions;
+using RealTimeChatApp.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddPersistanceServices(builder.Configuration);
+builder.Services.AddSignalRServices();
 
 
 
@@ -16,8 +19,7 @@ builder.Services.AddPersistanceServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfig();
 
 var app = builder.Build();
 
@@ -26,7 +28,6 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHsts();
 }
 if (app.Environment.IsDevelopment())
 {
@@ -37,19 +38,25 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors(builder =>
+{
+    builder.WithOrigins()
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+});
+
 // Global Excepion Handler  Middleware
 app.UseGlobalExcepionHandler();
-
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html");
 
+app.MapHubs();
 app.Run();

@@ -119,4 +119,28 @@ public class EfRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryK
         _context.Dispose();
     }
 
+    public Task Commit(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IQueryable<TEntity> GetAllIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors)
+    {
+         var query = _dbSet.AsQueryable();
+        foreach (var propertySelector in propertySelectors)
+        {
+            query = query.Include(propertySelector);
+        }
+        return query.Where(predicate);
+    }
+
+    public async Task<TEntity> GetSingleIncluding(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] propertySelectors)
+    {
+        var query = _dbSet.AsQueryable();
+        foreach (var propertySelector in propertySelectors)
+        {
+            query = query.Include(propertySelector);
+        }
+        return await query.FirstOrDefaultAsync(predicate);
+    }
 }

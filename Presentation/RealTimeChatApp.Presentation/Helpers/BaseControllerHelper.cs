@@ -7,7 +7,7 @@ namespace RealTimeChatApp.Presentation.Helpers
     {
         protected string GetUserId()
         {
-            return User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
         }
     }
 }
