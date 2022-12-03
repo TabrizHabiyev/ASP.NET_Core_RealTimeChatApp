@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿
 
 namespace RealTimeChatApp.Presentation.SwaggerExtensions;
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using RealTimeChatApp.Domain.Enums;
+﻿
 
 
 namespace RealTimeChatApp.Persistance.Extensions;

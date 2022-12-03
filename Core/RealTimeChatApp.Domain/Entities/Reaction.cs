@@ -1,4 +1,4 @@
-﻿using RealTimeChatApp.Domain.Entities.Common;
+﻿
 
 namespace RealTimeChatApp.Domain.Entities;
 

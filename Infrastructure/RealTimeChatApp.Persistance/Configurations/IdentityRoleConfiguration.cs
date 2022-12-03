@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RealTimeChatApp.Domain.Enums;
+﻿
 
 namespace RealTimeChatApp.Persistance.Configurations;
 internal class IdentityRoleConfiguration : IEntityTypeConfiguration<IdentityRole>

@@ -1,9 +1,5 @@
-﻿using RealTimeChatApp.Domain.Entities.Common;
-using System.Linq.Expressions;
-
+﻿
 namespace RealTimeChatApp.Application.Repositories;
-
-
 public interface IRepository<TEntity, in TPrimaryKey> : IDisposable where TEntity : BaseEntity<TPrimaryKey>
 {
     IQueryable<TEntity> GetAll();

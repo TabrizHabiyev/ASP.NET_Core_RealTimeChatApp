@@ -1,11 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using RealTimeChatApp.Application.Common.Interfaces.Token;
-using RealTimeChatApp.Domain.Entities;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿
 
 namespace RealTimeChatApp.Infrastructure.Services.Token;
 

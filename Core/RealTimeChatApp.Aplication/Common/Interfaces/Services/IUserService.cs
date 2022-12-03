@@ -1,4 +1,4 @@
-﻿using RealTimeChatApp.Application.DTOs.User;
+﻿
 
 namespace RealTimeChatApp.Application.Common.Interfaces.Services;
 

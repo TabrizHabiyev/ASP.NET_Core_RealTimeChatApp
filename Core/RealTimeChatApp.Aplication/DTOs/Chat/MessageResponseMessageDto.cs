@@ -1,13 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Http;
-using System.Text.Json.Serialization;
-
-namespace RealTimeChatApp.Application.DTOs;
+﻿namespace RealTimeChatApp.Application.DTOs;
 
 
-public class ChatResponseMessageDto
+public class MessageResponseMessageDto
 {
-    public Guid Id { get; set; } 
+    public Guid Id { get; set; }
     public Guid ChatId { get; set; }
     public string? Text { get; set; }
     public bool IsAttachment { get; set; }

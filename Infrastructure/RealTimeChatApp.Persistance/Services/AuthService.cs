@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.Common.Interfaces.Token;
-using RealTimeChatApp.Application.DTOs;
-using RealTimeChatApp.Application.DTOs.User;
-using RealTimeChatApp.Domain.Entities;
-using GlobalEx =RealTimeChatApp.Domain.ExceptionModels.Common;
-using System.Web;
+﻿
 
 namespace RealTimeChatApp.Persistance.Services;
 

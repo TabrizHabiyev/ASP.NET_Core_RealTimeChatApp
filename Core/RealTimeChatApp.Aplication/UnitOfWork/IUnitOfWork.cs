@@ -1,7 +1,4 @@
-﻿using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.Common.Interfaces.Token;
-using RealTimeChatApp.Application.Repositories;
-
+﻿
 namespace RealTimeChatApp.Application.UnitOfWork;
 
 public interface IUnitOfWork

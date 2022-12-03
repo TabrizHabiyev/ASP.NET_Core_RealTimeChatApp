@@ -1,8 +1,4 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using RealTimeChatApp.Aplication.Common.Interfaces.Services;
+﻿
 
 namespace RealTimeChatApp.Infrastructure.Services.File
 {

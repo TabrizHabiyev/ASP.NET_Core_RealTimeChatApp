@@ -1,1 +1,19 @@
-﻿
+﻿global using RealTimeChatApp.Application;
+global using RealTimeChatApp.Infrastructure;
+global using RealTimeChatApp.Persistance;
+global using RealTimeChatApp.Presentation.Extensions;
+global using RealTimeChatApp.Presentation.SwaggerExtensions;
+global using RealTimeChatApp.SignalR;
+global using System.Net;
+global using Newtonsoft.Json;
+global using GlobalEx = RealTimeChatApp.Domain.ExceptionModels.Common;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Security.Claims;
+global using Microsoft.OpenApi.Models;
+global using RealTimeChatApp.Presentation.Middlewares;
+global using Microsoft.AspNetCore.Authorization;
+global using RealTimeChatApp.Application.Common.Interfaces.Services;
+global using RealTimeChatApp.Application.DTOs;
+global using RealTimeChatApp.Presentation.Helpers;
+global using RealTimeChatApp.Application.DTOs.User;
+global using RealTimeChatApp.Application.UnitOfWork;

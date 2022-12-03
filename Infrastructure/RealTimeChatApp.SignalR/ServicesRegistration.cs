@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.SignalR.HubServices;
+﻿
 
 namespace RealTimeChatApp.SignalR
 {

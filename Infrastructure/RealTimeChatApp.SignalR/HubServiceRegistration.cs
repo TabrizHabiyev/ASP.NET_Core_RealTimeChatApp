@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using RealTimeChatApp.SignalR.HubServices;
+﻿
 
 public static class HubServiceRegistration
 {

@@ -1,1 +1,15 @@
-﻿
+﻿global using AutoMapper;
+global using RealTimeChatApp.Application.DTOs;
+global using RealTimeChatApp.Domain.Entities;
+global using RealTimeChatApp.Application.DTOs.User;
+global using CloudinaryDotNet.Actions;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using RealTimeChatApp.Application.AuToMapper;
+global using RealTimeChatApp.Application.Common.Interfaces.Services;
+global using RealTimeChatApp.Application.Common.Interfaces.Token;
+global using RealTimeChatApp.Application.Repositories;
+global using RealTimeChatApp.Domain.Entities.Common;
+global using System.Linq.Expressions;
+global using RealTimeChatApp.Domain.Enums;

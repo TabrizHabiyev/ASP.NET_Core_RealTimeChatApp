@@ -1,9 +1,4 @@
-using RealTimeChatApp.Application;
-using RealTimeChatApp.Infrastructure;
-using RealTimeChatApp.Persistance;
-using RealTimeChatApp.Presentation.Extensions;
-using RealTimeChatApp.Presentation.SwaggerExtensions;
-using RealTimeChatApp.SignalR;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

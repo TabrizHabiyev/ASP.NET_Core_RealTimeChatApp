@@ -1,14 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using RealTimeChatApp.Aplication.Common.Interfaces.Services;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.DTOs;
-using RealTimeChatApp.Application.UnitOfWork;
-using RealTimeChatApp.Domain.Entities;
-using RealTimeChatApp.Domain.Enums;
-using GlobalEx =RealTimeChatApp.Domain.ExceptionModels.Common;
+﻿
 namespace RealTimeChatApp.Persistance.Services
+
 {
     public class ChatService : IChatService
     {
@@ -31,27 +23,41 @@ namespace RealTimeChatApp.Persistance.Services
             _userManager = userManager;
         }
 
-        public async Task<List<ChatDto>> GetPrivateChats(Guid userId)
+        public async Task<List<ChatAllResponseDto>> GetPrivateChats(Guid userId)
         {
-            var chats = await _unitOfWork.ChatRepository.GetAllIncluding(x => x.Users.Any(x => x.UserId == userId), x => x.Users)
-            .Where(x => x.Type == ChatType.Private).ToListAsync();
-            return _mapper.Map<List<ChatDto>>(chats);
+            var chats = await _unitOfWork.ChatRepository.GetBy
+                (x => x.Type == ChatType.Private 
+                && x.Users.Any(u=>u.UserId == userId)
+                ).ToListAsync();
+            return _mapper.Map<List<ChatAllResponseDto>>(chats);
         }
 
-        public async Task<List<ChatDto>> GetChats(Guid userId)
+        public async Task<List<ChatAllResponseDto>> GetUserJoinededRoom(Guid userId)
         {
-            var chats = await _unitOfWork.ChatRepository.GetAllIncluding(x => x.Users)
-            .Where(x => !x.Users.Any(x => x.UserId == userId)).ToListAsync();
-            List<ChatDto> chatsDto = _mapper.Map<List<ChatDto>>(chats);
-            return _mapper.Map<List<ChatDto>>(chats);
+            var chats = await _unitOfWork.ChatRepository.GetBy
+                (x => x.Type == ChatType.Room
+                && x.Users.Any(u => u.UserId == userId)
+                ).ToListAsync();
+            return _mapper.Map<List<ChatAllResponseDto>>(chats);
         }
 
-        public async Task<ChatDto> GetChatAsync(Guid id)
+        public async Task<List<ChatAllResponseDto>> GetRoomsAsync(Guid userId) 
+            => _mapper.Map<List<ChatAllResponseDto>>(await _unitOfWork.ChatRepository.GetBy
+                (x => x.Type == ChatType.Room
+                && !x.Users.Any(u => u.UserId == userId)
+                ).ToListAsync());
+
+
+        public async Task<ChatResponseDto> GetChatAsync(Guid id , Guid userId)
         {
-          var chat = await _unitOfWork.ChatRepository.GetSingleIncluding(x => x.Id == id, x => x.Messages);
-          var chatDto = _mapper.Map<ChatDto>(chat);
-          chatDto.Users = chat.Users.Select(x => new ChatUserDto{ Id = x.UserId, UserName = x.User.UserName }).ToList();
-          return chatDto;
+          var chat = await _unitOfWork.ChatRepository.
+          GetSingleIncluding(x => x.Id == id && x.Users.Any(u => u.UserId == userId), x => x.Messages,u => u.Users);
+         var chatDto = _mapper.Map<ChatResponseDto>(chat);
+         chatDto?.ChatMessages?.ForEach(x => x.Reaction =  
+         _unitOfWork.ReactionRepository.GetBy(y => y.MessageId == x.Id)
+         .Select(r => r.Emoji.Code).FirstOrDefault());
+         chatDto?.ChatMessages?.ForEach(async x => x.UserName =await _userManager.Users.Select(o => o.UserName).FirstOrDefaultAsync());
+         return chatDto;
         }
         
 
@@ -126,11 +132,11 @@ namespace RealTimeChatApp.Persistance.Services
             }
         }
 
-        public async Task<ChatResponseMessageDto> GetMessagesIdAsync(Guid id)
+        public async Task<MessageResponseMessageDto> GetMessagesIdAsync(Guid id)
         {
             var messages = await _unitOfWork.MessageRepository.Get(id);
             var rection = await _unitOfWork.ReactionRepository.GetSingleIncluding(x => x.MessageId == id, x => x.Emoji);
-            var ResponseMessage = _mapper.Map<ChatResponseMessageDto>(messages);
+            var ResponseMessage = _mapper.Map<MessageResponseMessageDto>(messages);
             ResponseMessage.SenderUser = _mapper.Map<ChatUserDto>(messages.User);
             return messages == null ? throw new GlobalEx.NotFoundException("Messages Not Found") : 
             ResponseMessage;
@@ -154,7 +160,7 @@ namespace RealTimeChatApp.Persistance.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<ChatResponseMessageDto> CreateMessageAsync(CreateMessageDto createMessage , Guid userId)
+        public async Task<MessageResponseMessageDto> CreateMessageAsync(CreateMessageDto createMessage , Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             var chat = await _unitOfWork.ChatRepository.GetSingleIncluding(x => x.Id == createMessage.ChatId, x => x.Users);
@@ -178,12 +184,12 @@ namespace RealTimeChatApp.Persistance.Services
             message.IsAttachment = createMessage.AttachmentUrl != null ? true : false;
             await _unitOfWork.MessageRepository.Insert(message);
             await _unitOfWork.Commit();
-            var chatMessageDto = _mapper.Map<ChatResponseMessageDto>(message);
+            var chatMessageDto = _mapper.Map<MessageResponseMessageDto>(message);
             await _chatHubService.SendMessage(chatMessageDto);
             return chatMessageDto;
          }
 
-        public async Task<ChatResponseMessageDto> UpdateMessageAsync(CreateMessageDto createMessage ,Guid userId,Guid messageId)
+        public async Task<MessageResponseMessageDto> UpdateMessageAsync(CreateMessageDto createMessage ,Guid userId,Guid messageId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             var chat = await _unitOfWork.ChatRepository.GetSingleIncluding(x => x.Id == createMessage.ChatId, x => x.Users);
@@ -216,7 +222,7 @@ namespace RealTimeChatApp.Persistance.Services
             message.IsAttachment = createMessage.AttachmentUrl != null ? true : false;
             await _unitOfWork.MessageRepository.Update(message);
             await _unitOfWork.Commit();
-            var chatMessageDto = _mapper.Map<ChatResponseMessageDto>(message);
+            var chatMessageDto = _mapper.Map<MessageResponseMessageDto>(message);
             await _chatHubService.SendMessage(chatMessageDto);
             return chatMessageDto;
         }

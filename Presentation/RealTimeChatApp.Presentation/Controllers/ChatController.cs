@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.DTOs;
-using RealTimeChatApp.Presentation.Helpers;
+﻿
 
 
 namespace Alfaex.az_API.Controllers
@@ -27,16 +23,23 @@ namespace Alfaex.az_API.Controllers
         }
 
         [HttpGet]
-         public async Task<IActionResult> GetChats()
+        public async Task<IActionResult> GetUserJoinededRoom()
         {
-            var chat = await _chatService.GetChats(Guid.Parse(GetUserId()));
-            return Ok(chat);
+            var rooms = await _chatService.GetUserJoinededRoom(Guid.Parse(GetUserId()));
+            return Ok(rooms);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetRoomsAsync() 
+        {
+            var rooms = await _chatService.GetRoomsAsync(Guid.Parse(GetUserId()));
+            return Ok(rooms);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetChatAsync(Guid id)
         {
-            var chat = await _chatService.GetChatAsync(id);
+            var chat = await _chatService.GetChatAsync(id, Guid.Parse(GetUserId()));
             return Ok(chat);
         }
 
@@ -54,15 +57,9 @@ namespace Alfaex.az_API.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetMessagestIdAsync(Guid id)
-        {
-            var messages = await _chatService.GetMessagesIdAsync(id);
-            return Ok(messages);
-        }
 
-        [HttpPost]
-         public async Task<bool> DeleteChatAsync(Guid chatId)
+        [HttpDelete]
+        public async Task<bool> DeleteChatAsync(Guid chatId)
         {
             var chat = await  _chatService.DeleteChatAsync(chatId, Guid.Parse(GetUserId()));
             return chat;

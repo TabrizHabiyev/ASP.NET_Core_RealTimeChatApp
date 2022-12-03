@@ -1,5 +1,4 @@
 ﻿
-using RealTimeChatApp.Domain.Entities;
 
 namespace RealTimeChatApp.Application.Common.Interfaces.Token;
 

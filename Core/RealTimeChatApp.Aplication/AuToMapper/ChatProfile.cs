@@ -1,22 +1,25 @@
-﻿using AutoMapper;
-using RealTimeChatApp.Application.DTOs;
-using RealTimeChatApp.Domain.Entities;
-using RealTimeChatApp.Domain.Entities.Common;
-using RealTimeChatApp.Domain.Enums;
+﻿
 
 namespace RealTimeChatApp.Application.AuToMapper;
 
-    public class ChatProfile : Profile
-    {
+public class ChatProfile : Profile
+{
     public ChatProfile()
-        {
-               CreateMap<Chat, ChatDto>().ReverseMap();
+    {
+        CreateMap<Chat, ChatAllResponseDto>();
 
-               CreateMap<Message, ChatResponseMessageDto>();
+        CreateMap<Chat, ChatResponseDto>()
+            .ForMember(dest => dest.ChatMessages, opt => opt.MapFrom(src => src.Messages))
+            .ReverseMap();
+        CreateMap<Message, ChatMessageResponseDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+            .ReverseMap();
 
-               CreateMap<CreateMessageDto, Message>();
+        CreateMap<Message, MessageResponseMessageDto>()
+            .ForMember(dest => dest.SenderUser, opt => opt.MapFrom(src => src.User));
 
+        CreateMap<CreateMessageDto, Message>();
 
-               CreateMap<User, ChatUserDto>().ReverseMap();
-        }
+        CreateMap<User, ChatUserDto>().ReverseMap();
+    }
 }

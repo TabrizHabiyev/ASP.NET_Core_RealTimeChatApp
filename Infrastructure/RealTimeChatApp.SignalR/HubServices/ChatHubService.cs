@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.DTOs;
-using SignalRSwaggerGen.Attributes;
+﻿
 
 namespace RealTimeChatApp.SignalR.HubServices
 {
@@ -22,11 +19,11 @@ namespace RealTimeChatApp.SignalR.HubServices
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
         }
 
-        public async Task SendMessage(ChatResponseMessageDto messageDto)
+        public async Task SendMessage(MessageResponseMessageDto messageDto)
         {
             await _hubContext.Clients.Group(messageDto.ChatId.ToString()).SendAsync("ReceiveMessage", messageDto);
         }
-        public async Task UpdateMessage(ChatResponseMessageDto messageDto)
+        public async Task UpdateMessage(MessageResponseMessageDto messageDto)
         {
             await _hubContext.Clients.Group(messageDto.ChatId.ToString()).SendAsync("UpdateMessage", messageDto);
         }

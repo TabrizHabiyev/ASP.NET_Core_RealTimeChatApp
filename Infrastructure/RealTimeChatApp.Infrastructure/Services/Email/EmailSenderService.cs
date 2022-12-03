@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System.Net.Mail;
+﻿
 
 namespace RealTimeChatApp.Infrastructure.Services.Email;
 

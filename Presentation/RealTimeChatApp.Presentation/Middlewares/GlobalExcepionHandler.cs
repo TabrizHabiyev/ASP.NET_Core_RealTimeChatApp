@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Newtonsoft.Json;
-using GlobalEx = RealTimeChatApp.Domain.ExceptionModels.Common;
+﻿
 
 namespace RealTimeChatApp.Presentation.Middlewares;
 

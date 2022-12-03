@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RealTimeChatApp.Domain.Entities;
+﻿
 
 namespace RealTimeChatApp.Persistance.Configurations;
 

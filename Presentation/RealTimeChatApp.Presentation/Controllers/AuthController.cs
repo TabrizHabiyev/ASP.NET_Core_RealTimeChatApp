@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RealTimeChatApp.Application.DTOs.User;
-using RealTimeChatApp.Application.UnitOfWork;
-using RealTimeChatApp.Presentation.Helpers;
+﻿
 
 namespace Alfaex.az_API.Controllers
 {

@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RealTimeChatApp.Application.Repositories;
-using RealTimeChatApp.Domain.Entities.Common;
-using RealTimeChatApp.Persistance.Contexts;
-using System.Linq.Expressions;
+﻿
 
 public class EfRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : BaseEntity<TPrimaryKey>
 {

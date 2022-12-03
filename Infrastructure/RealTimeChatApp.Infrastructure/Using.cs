@@ -1,1 +1,21 @@
-﻿
+﻿global using System.Text;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.IdentityModel.Tokens;
+global using RealTimeChatApp.Aplication.Common.Interfaces.Services;
+global using RealTimeChatApp.Application.Common.Interfaces.Services;
+global using RealTimeChatApp.Application.Common.Interfaces.Token;
+global using RealTimeChatApp.Infrastructure.Services.Email;
+global using RealTimeChatApp.Infrastructure.Services.File;
+global using RealTimeChatApp.Infrastructure.Services.Token;
+global using RealTimeChatApp.Domain.Entities;
+global using System.Data;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using CloudinaryDotNet;
+global using CloudinaryDotNet.Actions;
+global using Microsoft.AspNetCore.Http;
+global using SendGrid;
+global using SendGrid.Helpers.Mail;
+global using System.Net.Mail;

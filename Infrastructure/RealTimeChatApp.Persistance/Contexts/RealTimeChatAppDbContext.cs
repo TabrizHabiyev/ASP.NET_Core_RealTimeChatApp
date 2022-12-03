@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using RealTimeChatApp.Domain.Entities;
-using RealTimeChatApp.Application.Common.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+﻿using RealTimeChatApp.Persistance.Configurations.Filters;
 
 namespace RealTimeChatApp.Persistance.Contexts;
 
@@ -20,6 +15,10 @@ public class RealTimeChatAppDbContext : IdentityDbContext<User, IdentityRole<Gui
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.UseSoftDelete();
         base.OnModelCreating(builder);
     }
 }
+
+
+

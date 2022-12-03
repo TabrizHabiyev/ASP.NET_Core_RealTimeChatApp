@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using RealTimeChatApp.Application.Common.Interfaces.Services;
-using RealTimeChatApp.Application.Repositories;
-using RealTimeChatApp.Application.UnitOfWork;
-using RealTimeChatApp.Domain.Entities;
-using RealTimeChatApp.Domain.Enums;
-using RealTimeChatApp.Persistance.Contexts;
-using RealTimeChatApp.Persistance.Extensions;
-using RealTimeChatApp.Persistance.Repositories;
-using RealTimeChatApp.Persistance.Services;
+﻿
 
 namespace RealTimeChatApp.Persistance;
 

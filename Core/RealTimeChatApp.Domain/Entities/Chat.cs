@@ -1,5 +1,4 @@
-﻿using RealTimeChatApp.Domain.Entities.Common;
-using RealTimeChatApp.Domain.Enums;
+﻿
 
 namespace RealTimeChatApp.Domain.Entities;
 

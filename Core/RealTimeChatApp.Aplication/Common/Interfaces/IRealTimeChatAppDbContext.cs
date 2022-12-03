@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RealTimeChatApp.Domain.Entities;
+﻿using RealTimeChatApp.Domain;
 
 namespace RealTimeChatApp.Application.Common.Interfaces;
 
@@ -12,3 +11,5 @@ public interface IRealTimeChatAppDbContext
     DbSet<Emoji> Emojis { get;}
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
+
+

@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using RealTimeChatApp.Persistance.Contexts;
-using RealTimeChatApp.Domain.Enums;
+﻿
 
 namespace RealTimeChatApp.Persistance;
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RealTimeChatAppDbContext>
