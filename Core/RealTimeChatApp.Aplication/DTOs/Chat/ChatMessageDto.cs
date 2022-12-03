@@ -3,7 +3,7 @@ namespace RealTimeChatApp.Application.DTOs.Chat;
 
 public class ChatMessageDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string? Text { get; set; }
     public bool IsImage { get; set; }
     public string? ImageUrl { get; set; }
